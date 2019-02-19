@@ -30,26 +30,51 @@ namespace FancyCalc
         //generic calc method. usage: "10 + 20"  => result 30
         public double Culculate(string expression)
         {
-            string[] expr = expression.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            double result = 0; ;
-            for (int i = 1; i < expr.Length - 1; i++)
+            if (expression is null) throw new ArgumentNullException();
+            double result;
+            char ch = expression[0];
+            string num1="", num2 = "", act = "";
+
+            for (int i = 0; i < expression.Length; i++)
             {
-                switch (expr[i])
+                ch = (char)expression[i];
+                switch (ch)
                 {
-                    case "+":
-                        result = Add(int.Parse(expr[i - 1]), int.Parse(expr[i + 1]));
+                    case '+':
+                        act = "+";
                         break;
-                    case "-":
-                        result = Subtract(int.Parse(expr[i - 1]), int.Parse(expr[i + 1]));
+                    case '-':
+                        act = "-";
+                        break;
+                    case '*':
+                        act = "*";
                         break;
                     default:
-                        result = Multiply(int.Parse(expr[i - 1]), int.Parse(expr[i + 1]));
                         break;
                 }
-                //Console.WriteLine(s);
+                if (act == "")
+                {
+                if (char.IsDigit(ch)) { num1 = num1 + ch; }; 
+                }
+                else
+                {
+                if (char.IsDigit(ch)) { num2 = num2 + ch; }; 
+                }
             }
-            return result;
+            switch (act)
+            {
+                case "+":
+                    result = Add(int.Parse(num1), int.Parse(num2));
+                    break;
+                case "-":
+                    result = Subtract(int.Parse(num1), int.Parse(num2));
+                    break;
+                default:
+                    result = Multiply(int.Parse(num1), int.Parse(num2));
+                    break;
+            }
 
+            return result;
         }
     }
 }
